@@ -6,7 +6,7 @@
     
     <title>Exponential Smoothing | Maxwell Griffith</title>
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="description" content="This is the intro to the post where I talk about exponential smoothing">
+    <meta name="description" content="Applying concepts from Forecasting Principles and Practice to electricty prices in Python">
     <meta name="generator" content="Hugo 0.135.0">
     
     
@@ -51,7 +51,7 @@
     <meta property="og:url" content="https://maxwellgriffith345.github.io/posts/exponential_smoothing/">
   <meta property="og:site_name" content="Maxwell Griffith">
   <meta property="og:title" content="Exponential Smoothing">
-  <meta property="og:description" content="This is the intro to the post where I talk about exponential smoothing">
+  <meta property="og:description" content="Applying concepts from Forecasting Principles and Practice to electricty prices in Python">
   <meta property="og:locale" content="en_us">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -59,13 +59,13 @@
     <meta property="article:modified_time" content="2024-10-12T17:46:11-05:00">
 
   <meta itemprop="name" content="Exponential Smoothing">
-  <meta itemprop="description" content="This is the intro to the post where I talk about exponential smoothing">
+  <meta itemprop="description" content="Applying concepts from Forecasting Principles and Practice to electricty prices in Python">
   <meta itemprop="datePublished" content="2024-10-12T17:46:11-05:00">
   <meta itemprop="dateModified" content="2024-10-12T17:46:11-05:00">
-  <meta itemprop="wordCount" content="910">
+  <meta itemprop="wordCount" content="1019">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Exponential Smoothing">
-  <meta name="twitter:description" content="This is the intro to the post where I talk about exponential smoothing">
+  <meta name="twitter:description" content="Applying concepts from Forecasting Principles and Practice to electricty prices in Python">
 
 	
   </head>
@@ -161,8 +161,12 @@
       
       
     </header>
-    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><p>This is the intro to the post where I talk about exponential smoothing</p>
-<p><a href="https://www.statsmodels.org/stable/examples/notebooks/generated/exponential_smoothing.html#">Stats Model Exponential Smoothin</a></p>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><p>Applying concepts from <a href="https://otexts.com/fpp3/expsmooth.html">Forecasting Principles and Practice</a> to electricty prices in Python</p>
+<h2 id="intro">Intro</h2>
+<p>This is a part four in my series to apply the time series forecasting methods presented by Hyndmam and Athanasopoulos in python. I use real world generator location marginal prices that were pulled from South West Power Pool</p>
+<p><strong>Concepts</strong>: Simple Smoothing, Holt&rsquo;s method, Holt-Wintes&rsquo; method, model selection and forecasting.</p>
+<p><strong>Libraries</strong>: Stats Models, Matplotlib, Seaborn, Pandas</p>
+<p><a href="https://www.statsmodels.org/stable/examples/notebooks/generated/exponential_smoothing.html#">Stats Models Exponential Smoothing</a></p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
 </span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
 </span></span><span style="display:flex;"><span><span style="color:#f92672">%</span>matplotlib inline
@@ -176,7 +180,6 @@
 </span></span><span style="display:flex;"><span>    datetime_str <span style="color:#f92672">=</span> dt_str[:<span style="color:#f92672">-</span><span style="color:#ae81ff">3</span>] <span style="color:#f92672">+</span> dt_str[<span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>:]
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> pd<span style="color:#f92672">.</span>to_datetime(datetime_str, utc<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, format<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;%Y-%m-</span><span style="color:#e6db74">%d</span><span style="color:#e6db74"> %H:%M:%S%z&#34;</span>)
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># TODO RE-Write without using &#34;date_parser&#34;</span>
 </span></span><span style="display:flex;"><span>df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#34;LMPSWide2023.csv&#34;</span>, parse_dates<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;Time&#39;</span>], date_parser<span style="color:#f92672">=</span>parse_datetime_with_timezone, index_col<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Time&#39;</span>)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># Make sure this is the right timezone</span>
@@ -215,20 +218,18 @@
 </span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>tick_params(axis<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;x&#39;</span>, rotation<span style="color:#f92672">=</span><span style="color:#ae81ff">55</span>)
 </span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#34;Fitted Values from Simple Smoothing&#34;</span>)
 </span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>legend()
-</span></span></code></pre></div><pre><code>&lt;matplotlib.legend.Legend at 0x1425b1df0&gt;
-</code></pre>
-<figure><img src="/Exponential_Smoothing_files/Exponential_Smoothing_11_1.png"><figcaption>
-      <h4>MatplotGraph</h4>
+</span></span></code></pre></div><figure><img src="/Exponential_Smoothing_files/Exponential_Smoothing_11_1.png"><figcaption>
+      <h4>Simple Smoothing</h4>
     </figcaption>
 </figure>
 
 <ul>
-<li>optimized $\alpha$ is nearly 1, so the most recent observations have the biggest weight</li>
+<li>optimized \( \alpha \) is nearly 1, so the most recent observations have the biggest weight</li>
 </ul>
 <h3 id="holts-method">Holt&rsquo;s Method</h3>
 <ul>
 <li>Our data for one year does not present a steady trend so we wouldn&rsquo;t expect Holts linear trend method to improve the model greatly</li>
-<li>Fit two models again the first $\alpha = 0.95$ and $\beta=.2$, fit2 we use dampening parameter $\phi$ and let it be optimized while fixing alpha and beta as in the first model</li>
+<li>Fit two models again the first \( \alpha = 0.95 \) and \( \beta=.2 \), fit2 we use dampening parameter $\phi$ and let it be optimized while fixing alpha and beta as in the first model</li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>Hfit1 <span style="color:#f92672">=</span> Holt(cimarron_train, initialization_method <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;estimated&#39;</span>)<span style="color:#f92672">.</span>fit(
 </span></span><span style="display:flex;"><span>    smoothing_level <span style="color:#f92672">=</span> <span style="color:#ae81ff">.95</span>, smoothing_trend <span style="color:#f92672">=</span> <span style="color:#ae81ff">.2</span>, optimized<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
@@ -241,9 +242,11 @@
 </span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>tick_params(axis<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;x&#39;</span>, rotation<span style="color:#f92672">=</span><span style="color:#ae81ff">55</span>)
 </span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#34;Fitted Values from Holt&#39;s Trend Method&#34;</span>)
 </span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>legend()
-</span></span></code></pre></div><pre><code>&lt;matplotlib.legend.Legend at 0x142561010&gt;
-</code></pre>
-<p><img src="Exponential_Smoothing_files/Exponential_Smoothing_16_1.png" alt="png"></p>
+</span></span></code></pre></div><figure><img src="/Exponential_Smoothing_files/Exponential_Smoothing_16_1.png"><figcaption>
+      <h4>Holt&#39;s Trend Method</h4>
+    </figcaption>
+</figure>
+
 <h3 id="methods-with-seasonality">Methods with Seasonality</h3>
 <ul>
 <li>Our data has strong daily cycles so we would hope to see improvement in our model with the inclusion of the seasonal component</li>
@@ -274,9 +277,11 @@
 </span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>tick_params(axis<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;x&#39;</span>, rotation<span style="color:#f92672">=</span><span style="color:#ae81ff">55</span>)
 </span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>legend()
 </span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#34;Fitted Values From Holt-Winters&#39; Method&#34;</span>)
-</span></span></code></pre></div><pre><code>Text(0.5, 1.0, &quot;Fitted Values From Holt-Winters' Method&quot;)
-</code></pre>
-<p><img src="Exponential_Smoothing_files/Exponential_Smoothing_19_1.png" alt="png"></p>
+</span></span></code></pre></div><figure><img src="/Exponential_Smoothing_files/Exponential_Smoothing_19_1.png"><figcaption>
+      <h4>Holt-Winters&#39; Method</h4>
+    </figcaption>
+</figure>
+
 <ul>
 <li>We can inspect each component of the model to get a better feel for how the season component is modeled</li>
 </ul>
@@ -302,7 +307,11 @@
 </span></span><span style="display:flex;"><span>ax1<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">&#34;Season of 1 Day&#34;</span>)
 </span></span><span style="display:flex;"><span>ax4<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">&#34;Season of 1 Week&#34;</span>)
 </span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()
-</span></span></code></pre></div><p><img src="Exponential_Smoothing_files/Exponential_Smoothing_21_0.png" alt="png"></p>
+</span></span></code></pre></div><figure><img src="/Exponential_Smoothing_files/Exponential_Smoothing_21_0.png"><figcaption>
+      <h4>Level, Trend, and Seasonal States</h4>
+    </figcaption>
+</figure>
+
 <h3 id="innovations-state-space-models-for-exponential-smoothing">Innovations state space models for exponential smoothing</h3>
 <ul>
 <li>turns the method for point forecast into stochastic model</li>
@@ -331,17 +340,47 @@
 </span></span><span style="display:flex;"><span>results[<span style="color:#e6db74">&#34;HWDay&#34;</span>] <span style="color:#f92672">=</span> [HWfit1<span style="color:#f92672">.</span>sse, HWfit1<span style="color:#f92672">.</span>aic, HWfit1<span style="color:#f92672">.</span>aicc, HWfit1<span style="color:#f92672">.</span>bic]
 </span></span><span style="display:flex;"><span>results[<span style="color:#e6db74">&#34;HWWeek&#34;</span>] <span style="color:#f92672">=</span> [HWfit2<span style="color:#f92672">.</span>sse, HWfit2<span style="color:#f92672">.</span>aic, HWfit2<span style="color:#f92672">.</span>aicc, HWfit2<span style="color:#f92672">.</span>bic]
 </span></span><span style="display:flex;"><span>results
-</span></span></code></pre></div><!-- raw HTML omitted -->
-<pre><code>.dataframe tbody tr th {
-    vertical-align: top;
-}
-
-.dataframe thead th {
-    text-align: right;
-}
-</code></pre>
-<p><!-- raw HTML omitted --></p>
-<!-- raw HTML omitted -->
+</span></span></code></pre></div><table>
+  <thead>
+      <tr>
+          <th style="text-align: left"></th>
+          <th style="text-align: left">H1</th>
+          <th style="text-align: left">H2</th>
+          <th style="text-align: left">HWDay</th>
+          <th style="text-align: left">HWWeek</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">SSE</td>
+          <td style="text-align: left">247,396.38</td>
+          <td style="text-align: left">214,378.04</td>
+          <td style="text-align: left">198,742.90</td>
+          <td style="text-align: left">198,168.92</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">AIC</td>
+          <td style="text-align: left">28,878.50</td>
+          <td style="text-align: left">27,649.69</td>
+          <td style="text-align: left">27,045.02</td>
+          <td style="text-align: left">27,308.17</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">AICC</td>
+          <td style="text-align: left">28,878.51</td>
+          <td style="text-align: left">27,649.70</td>
+          <td style="text-align: left">27,045.24</td>
+          <td style="text-align: left">27,315.41</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">BIC</td>
+          <td style="text-align: left">28,906.73</td>
+          <td style="text-align: left">27,684.98</td>
+          <td style="text-align: left">27,242.66</td>
+          <td style="text-align: left">28,522.25</td>
+      </tr>
+  </tbody>
+</table>
 <ul>
 <li>The model with the lowest AICC is the Holts Winter Seasonal where the season is set to 1 day, we will use this for forecasting</li>
 <li>Overall the AICC values are very high which would indicate exponential smoothing isn&rsquo;t the best approach</li>
@@ -350,7 +389,11 @@
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>ax<span style="color:#f92672">=</span>cimarron_test[:<span style="color:#ae81ff">48</span>]<span style="color:#f92672">.</span>plot(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">10</span>,<span style="color:#ae81ff">6</span>), marker<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;o&#34;</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;black&#34;</span>, title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Forecasts from Holt-Winters&#39; method&#34;</span>)
 </span></span><span style="display:flex;"><span>HWfit1<span style="color:#f92672">.</span>forecast(<span style="color:#ae81ff">24</span>)<span style="color:#f92672">.</span>rename(<span style="color:#e6db74">&#34;Holt-Winters&#34;</span>)<span style="color:#f92672">.</span>plot(ax<span style="color:#f92672">=</span>ax, marker <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;*&#34;</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;red&#34;</span>, legend<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
 </span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()
-</span></span></code></pre></div><p><img src="Exponential_Smoothing_files/Exponential_Smoothing_28_0.png" alt="png"></p>
+</span></span></code></pre></div><figure><img src="/Exponential_Smoothing_files/Exponential_Smoothing_28_0.png"><figcaption>
+      <h4>Holts-Winters&#39; Forecast</h4>
+    </figcaption>
+</figure>
+
 <ul>
 <li>The model does not perform well on the test set</li>
 <li>Next we will run random simulations using the state space formulation to get prediction intervals</li>
@@ -363,7 +406,21 @@
 </span></span><span style="display:flex;"><span>simulations<span style="color:#f92672">.</span>plot(ax<span style="color:#f92672">=</span>ax, style<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;-&#34;</span>, alpha<span style="color:#f92672">=</span><span style="color:#ae81ff">0.05</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;grey&#34;</span>, legend<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
 </span></span><span style="display:flex;"><span>HWfit1<span style="color:#f92672">.</span>forecast(<span style="color:#ae81ff">24</span>)<span style="color:#f92672">.</span>rename(<span style="color:#e6db74">&#34;Holt-Winters&#34;</span>)<span style="color:#f92672">.</span>plot(ax<span style="color:#f92672">=</span>ax, marker <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;*&#34;</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;red&#34;</span>, legend<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
 </span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()
-</span></span></code></pre></div><p><img src="Exponential_Smoothing_files/Exponential_Smoothing_30_0.png" alt="png"></p><ul class="pa0">
+</span></span></code></pre></div><figure><img src="/Exponential_Smoothing_files/Exponential_Smoothing_30_0.png"><figcaption>
+      <h4>Simulations from Holts-Winters&#39; Model</h4>
+    </figcaption>
+</figure>
+
+<h2 id="resources">Resources</h2>
+<ul>
+<li>
+<p>Hyndman, R.J., &amp; Athanasopoulos, G. (2021) Forecasting: principles and practice, 3rd edition, OTexts: Melbourne, Australia. OTexts.com/fpp3</p>
+</li>
+<li>
+<p>Seabold, Skipper, and Josef Perktold. “statsmodels: Econometric and statistical modeling with python.” Proceedings of the 9th Python in Science Conference. 2010.
+<a href="https://www.statsmodels.org/stable/examples/notebooks/generated/exponential_smoothing.html#">Exponential Smoothing Example</a></p>
+</li>
+</ul><ul class="pa0">
   
 </ul>
 <div class="mt6 instapaper_ignoref">
