@@ -15,5 +15,12 @@
       <guid>https://maxwellgriffith345.github.io/posts/exponential_smoothing/</guid>
       <description>&lt;p&gt;Applying concepts from &lt;a href=&#34;https://otexts.com/fpp3/expsmooth.html&#34;&gt;Forecasting Principles and Practice&lt;/a&gt; to electricty prices in Python&lt;/p&gt;</description>
     </item>
+    <item>
+      <title>Time Series Graphics</title>
+      <link>https://maxwellgriffith345.github.io/posts/time_series_graphics/</link>
+      <pubDate>Thu, 12 Sep 2024 17:46:11 -0500</pubDate>
+      <guid>https://maxwellgriffith345.github.io/posts/time_series_graphics/</guid>
+      <description>&lt;p&gt;Applying concepts from &lt;a href=&#34;https://otexts.com/fpp3/expsmooth.html&#34;&gt;Forecasting Principles and Practice&lt;/a&gt; to electricty prices in Python&lt;/p&gt;</description>
+    </item>
   </channel>
 </rss>

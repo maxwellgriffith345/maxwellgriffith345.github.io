@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Maxwel Griffith on Maxwell Griffith</title>
+    <title>Maxwell Griffith</title>
     <link>https://maxwellgriffith345.github.io/</link>
-    <description>Recent content in Maxwel Griffith on Maxwell Griffith</description>
+    <description>Recent content on Maxwell Griffith</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 12 Oct 2024 17:46:11 -0500</lastBuildDate>
@@ -13,6 +13,13 @@
       <link>https://maxwellgriffith345.github.io/posts/exponential_smoothing/</link>
       <pubDate>Sat, 12 Oct 2024 17:46:11 -0500</pubDate>
       <guid>https://maxwellgriffith345.github.io/posts/exponential_smoothing/</guid>
+      <description>&lt;p&gt;Applying concepts from &lt;a href=&#34;https://otexts.com/fpp3/expsmooth.html&#34;&gt;Forecasting Principles and Practice&lt;/a&gt; to electricty prices in Python&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Time Series Graphics</title>
+      <link>https://maxwellgriffith345.github.io/posts/time_series_graphics/</link>
+      <pubDate>Thu, 12 Sep 2024 17:46:11 -0500</pubDate>
+      <guid>https://maxwellgriffith345.github.io/posts/time_series_graphics/</guid>
       <description>&lt;p&gt;Applying concepts from &lt;a href=&#34;https://otexts.com/fpp3/expsmooth.html&#34;&gt;Forecasting Principles and Practice&lt;/a&gt; to electricty prices in Python&lt;/p&gt;</description>
     </item>
     <item>
